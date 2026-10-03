@@ -59,22 +59,10 @@
             align-items: center;
         }
 
-        .logo-icon {
-            width: 45px;
+        /* Imagen del logo sin fondo para la barra superior */
+        .logo-img {
             height: 45px;
-            background-color: #ffffff;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
-        }
-
-        .logo-icon span {
-            color: #22c55e;
-            font-size: 28px;
-            font-weight: bold;
-            font-style: italic;
+            object-fit: contain;
         }
 
         /* Menú lateral (Drawer) */
@@ -123,6 +111,12 @@
             align-items: center;
         }
 
+        /* Imagen para el ícono pequeño del menú lateral */
+        .sidebar-logo-img {
+            height: 35px;
+            object-fit: contain;
+        }
+
         /* Contenido Principal */
         main {
             margin-top: 70px;
@@ -145,6 +139,7 @@
             border-radius: 24px;
         }
 
+        /* Contenedor del ícono grande de la tarjeta */
         .app-icon-large {
             width: 160px;
             height: 160px;
@@ -155,13 +150,14 @@
             justify-content: center;
             box-shadow: 0 10px 25px rgba(34, 197, 94, 0.3);
             flex-shrink: 0;
+            overflow: hidden;
+            padding: 15px;
         }
 
-        .app-icon-large span {
-            color: #ffffff;
-            font-size: 100px;
-            font-weight: bold;
-            font-style: italic;
+        .hero-logo-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
 
         .hero-content h1 {
@@ -287,9 +283,8 @@
             <span></span>
         </button>
         <div class="logo-container" onclick="showSection('home')">
-            <div class="logo-icon">
-                <span>S</span>
-            </div>
+            <!-- Segundo link (sin fondo) para la barra superior -->
+            <img src="https://i.postimg.cc/MpkLXqBx/Shooper-removebg-preview-(1).png" alt="Shooper Logo" class="logo-img">
         </div>
     </header>
 
@@ -301,9 +296,8 @@
             <li><a href="mailto:shoopercustomerservice@gmail.com?subject=Necesito%20mas%20información%20sobre%20shooper!" onclick="closeSidebar()">Contáctanos</a></li>
         </ul>
         <div class="sidebar-footer" onclick="showSection('home'); closeSidebar();" style="cursor: pointer;">
-            <div class="logo-icon" style="width: 35px; height: 35px;">
-                <span style="font-size: 20px;">S</span>
-            </div>
+            <!-- Tercer link para el ícono pequeño de la lista lateral -->
+            <img src="https://i.postimg.cc/v8CyLRnN/Shooper-(1).png" alt="Shooper Icon" class="sidebar-logo-img">
         </div>
     </div>
 
@@ -312,7 +306,7 @@
         <section id="home-section" class="page-section active">
             <div class="hero-section">
                 <div class="app-icon-large">
-                    <span>S</span>
+                    <img src="https://i.postimg.cc/MpkLXqBx/Shooper-removebg-preview-(1).png" alt="Shooper App Icon" class="hero-logo-img">
                 </div>
                 <div class="hero-content">
                     <h1>Shooper!</h1>
