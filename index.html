@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shooper! - Descarga la app</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        body {
+            background-color: #ffffff;
+            color: #1f2937;
+            overflow-x: hidden;
+        }
+
+        /* Barra superior */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background: linear-gradient(135deg, #4ade80, #22c55e);
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .menu-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 22px;
+            z-index: 1002;
+        }
+
+        .menu-btn span {
+            width: 100%;
+            height: 3px;
+            background-color: #ffffff;
+            border-radius: 2px;
+        }
+
+        .logo-container {
+            margin-left: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+        }
+
+        .logo-icon span {
+            color: #22c55e;
+            font-size: 28px;
+            font-weight: bold;
+            font-style: italic;
+        }
+
+        /* Menú lateral (Drawer) */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -280px;
+            width: 280px;
+            height: 100%;
+            background-color: #111827;
+            color: #ffffff;
+            transition: left 0.3s ease;
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 90px 20px 30px 20px;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.3);
+        }
+
+        .sidebar.open {
+            left: 0;
+        }
+
+        .sidebar-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .sidebar-links li a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .sidebar-links li a:hover {
+            color: #4ade80;
+        }
+
+        .sidebar-footer {
+            display: flex;
+            align-items: center;
+        }
+
+        /* Contenido Principal */
+        main {
+            margin-top: 70px;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 70px);
+        }
+
+        .hero-section {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 40px;
+            max-width: 900px;
+            width: 100%;
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 24px;
+        }
+
+        .app-icon-large {
+            width: 160px;
+            height: 160px;
+            background: linear-gradient(135deg, #4ade80, #16a34a);
+            border-radius: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 25px rgba(34, 197, 94, 0.3);
+            flex-shrink: 0;
+        }
+
+        .app-icon-large span {
+            color: #ffffff;
+            font-size: 100px;
+            font-weight: bold;
+            font-style: italic;
+        }
+
+        .hero-content h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: #111827;
+            margin-bottom: 12px;
+        }
+
+        .hero-content p {
+            font-size: 18px;
+            color: #4b5563;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, #4ade80, #16a34a);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 16px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(34, 197, 94,.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(34, 197, 94, 0.6);
+        }
+
+        /* Secciones dinámicas (FAQ y Términos) */
+        .page-section {
+            display: none;
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .page-section.active {
+            display: block;
+        }
+
+        .page-title {
+            font-size: 36px;
+            font-weight: bold;
+            color: #111827;
+            margin-bottom: 25px;
+            border-bottom: 3px solid #22c55e;
+            padding-bottom: 10px;
+        }
+
+        /* Acordeón FAQ */
+        .faq-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .faq-item {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .faq-question {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+
+        .faq-answer {
+            font-size: 15px;
+            color: #4b5563;
+            line-height: 1.6;
+        }
+
+        /* Estilos Términos y Condiciones */
+        .terms-content {
+            background: #f9fafb;
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid #e5e7eb;
+            line-height: 1.7;
+            color: #374151;
+        }
+
+        .terms-content h3 {
+            margin-top: 20px;
+            margin-bottom: 10px;
+            color: #111827;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-section {
+                flex-direction: column;
+                text-align: center;
+                padding: 20px;
+            }
+            .hero-content h1 {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Barra Superior -->
+    <header>
+        <button class="menu-btn" id="menuToggle" onclick="toggleSidebar()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="logo-container" onclick="showSection('home')">
+            <div class="logo-icon">
+                <span>S</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Menú Lateral -->
+    <div class="sidebar" id="sidebar">
+        <ul class="sidebar-links">
+            <li><a href="#" onclick="showSection('faq'); closeSidebar();">FAQ</a></li>
+            <li><a href="#" onclick="showSection('terms'); closeSidebar();">Términos y condiciones</a></li>
+            <li><a href="mailto:shoopercustomerservice@gmail.com?subject=Necesito%20mas%20información%20sobre%20shooper!" onclick="closeSidebar()">Contáctanos</a></li>
+        </ul>
+        <div class="sidebar-footer" onclick="showSection('home'); closeSidebar();" style="cursor: pointer;">
+            <div class="logo-icon" style="width: 35px; height: 35px;">
+                <span style="font-size: 20px;">S</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenido Principal (Inicio) -->
+    <main>
+        <section id="home-section" class="page-section active">
+            <div class="hero-section">
+                <div class="app-icon-large">
+                    <span>S</span>
+                </div>
+                <div class="hero-content">
+                    <h1>Shooper!</h1>
+                    <p>Descarga la version mas reciente de Shooper, segura y eficiente</p>
+                    <!-- Cambia 'shooper.apk' por el nombre real de tu archivo APK cuando lo subas -->
+                    <a href="shooper.apk" class="download-btn" download>Descarga la ultima version</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección FAQ (30 Preguntas y Respuestas) -->
+        <section id="faq-section" class="page-section">
+            <h2 class="page-title">Preguntas Frecuentes (FAQ)</h2>
+            <div class="faq-container">
+                
+                <div class="faq-item">
+                    <div class="faq-question">1. ¿Shooper! es segura? ¿Qué pasará con mis datos personales?</div>
+                    <div class="faq-answer">Sí, Shooper! es completamente segura. Tus datos personales y de acceso se almacenan de forma cifrada y protegida utilizando estándares modernos de seguridad y bases de datos seguras (Firebase/Room). Nunca compartimos tu información personal con terceros y solo se utiliza para gestionar tu perfil, tus listas y tu carrito de compras dentro de la aplicación.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">2. ¿Cómo puedo descargar e instalar la aplicación en mi teléfono Android?</div>
+                    <div class="faq-answer">Solo debes hacer clic en el botón verde "Descarga la última versión" en nuestra página principal. Se descargará el archivo APK. Una vez descargado, ábrelo y permite la instalación de fuentes desconocidas si tu teléfono te lo solicita para completar el proceso de forma rápida.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">3. ¿Shooper! tiene algún costo de descarga o suscripción?</div>
+                    <div class="faq-answer">No, la aplicación Shooper! es 100% gratuita para todos los usuarios que deseen descargarla y utilizarla en sus dispositivos móviles.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">4. ¿Necesito crear una cuenta obligatoriamente para usar la aplicación?</div>
+                    <div class="faq-answer">Puedes navegar y ver el menú principal sin cuenta, pero para utilizar funciones avanzadas como guardar productos en tu carrito personalizado o sincronizar tus preferencias, te pediremos iniciar sesión o registrarte.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">5. ¿Cómo puedo restablecer mi contraseña si la olvido?</div>
+                    <div class="faq-answer">Actualmente puedes gestionar tu cuenta desde el apartado de perfil en la aplicación. Si presentas problemas de acceso, puedes contactarnos directamente a través de nuestro correo de soporte.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">6. ¿Cómo funciona el carrito de compras en Shooper!?</div>
+                    <div class="faq-answer">El carrito de compras te permite añadir los productos que desees, modificar las cantidades con los botones de más y menos, ver el costo total actualizado en tiempo real y proceder al pago de forma integrada.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">7. ¿Puedo usar Shooper! sin conexión a internet?</div>
+                    <div class="faq-answer">Algunas funciones locales operan con base de datos interna, pero para ver productos actualizados, tiendas y sincronizar tu carrito en la nube, se requiere conexión a internet.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">8. ¿Qué hago si la aplicación se cierra inesperadamente?</div>
+                    <div class="faq-answer">Te recomendamos asegurarte de tener descargada la última versión disponible desde esta página web. Si el problema persiste, puedes borrar el caché de la app o reinstalarla.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">9. ¿Cómo puedo contactar al soporte técnico si tengo un error?</div>
+                    <div class="faq-answer">Puedes dirigirte al menú lateral de nuestra web, seleccionar la opción "Contáctanos", la cual abrirá tu aplicación de Gmail automáticamente para enviar un correo a shoopercustomerservice@gmail.com.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">10. ¿En qué dispositivos Android funciona Shooper!?</div>
+                    <div class="faq-answer">Shooper! es compatible con la gran mayoría de teléfonos inteligentes y tabletas que utilicen versiones recientes del sistema operativo Android.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">11. ¿Cómo se actualiza la aplicación cuando hay una nueva versión?</div>
+                    <div class="faq-answer">Cada vez que lancemos mejoras o correcciones, publicaremos el nuevo APK en esta misma página web. Solo debes volver aquí y descargar la actualización más reciente.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">12. ¿Mis datos de pago están seguros en Shooper!?</div>
+                    <div class="faq-answer">Shooper! procesa las experiencias de compra y simulación de pago bajo entornos controlados y seguros, protegiendo en todo momento la privacidad de tus transacciones.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">13. ¿Puedo sugerir nuevas tiendas o productos para que aparezcan en la app?</div>
+                    <div class="faq-answer">¡Por supuesto! Nos encanta escuchar a nuestra comunidad. Puedes enviarnos tus sugerencias y comentarios a través de nuestro correo de atención al cliente.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">14. ¿Por qué mi teléfono me advierte sobre la instalación de archivos APK?</div>
+                    <div class="faq-answer">Es una medida de seguridad estándar que Android activa cuando descargas aplicaciones fuera de Google Play Store. Te confirmamos que nuestro archivo es 100% seguro y libre de virus.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">15. ¿Cómo puedo ver las tiendas disponibles en la aplicación?</div>
+                    <div class="faq-answer">Dentro de la interfaz de Shooper!, cuentas con una sección dedicada exclusivamente a "Tiendas" donde podrás explorar todas las opciones asociadas.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">16. ¿Se pueden eliminar productos del carrito individualmente?</div>
+                    <div class="faq-answer">Sí, en la pantalla del carrito cuentas con controles de cantidad y un botón de papelera dedicado para eliminar por completo cualquier producto que ya no desees.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">17. ¿Consume muchos recursos de batería mi teléfono?</div>
+                    <div class="faq-answer">No, Shooper! ha sido optimizada para ofrecer un rendimiento fluido y eficiente, consumiendo los mínimos recursos posibles de batería y memoria RAM.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">18. ¿Puedo cambiar el idioma o la moneda en la aplicación?</div>
+                    <div class="faq-answer">La aplicación está diseñada principalmente en español y configurada para mostrar precios locales de forma clara y accesible para nuestros usuarios.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">19. ¿Qué permisos solicita la aplicación en mi dispositivo?</div>
+                    <div class="faq-answer">Shooper! solo solicita los permisos esenciales estrictamente necesarios para su funcionamiento óptimo, como acceso a internet y almacenamiento para descargas.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">20. ¿Puedo usar la misma cuenta en varios dispositivos al mismo tiempo?</div>
+                    <div class="faq-answer">Sí, gracias a nuestra integración en la nube, tus datos de usuario y carrito se mantendrán sincronizados sin inconvenientes.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">21. ¿Qué hago si olvidé mi correo de registro?</div>
+                    <div class="faq-answer">Te sugerimos revisar los correos de bienvenida o confirmación en tus bandejas de entrada principales o contactarnos mediante el formulario de soporte.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">22. ¿La aplicación muestra publicidad invasiva?</div>
+                    <div class="faq-answer">No, nos enfocamos en ofrecer una experiencia de usuario limpia, rápida y libre de anuncios molestos o intrusivos.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">23. ¿Cómo puedo reportar un error visual o de funcionamiento?</div>
+                    <div class="faq-answer">Puedes escribirnos a shoopercustomerservice@gmail.com adjuntando una captura de pantalla y una breve descripción del error para solucionarlo rápidamente.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">24. ¿Es necesario tener conocimientos técnicos para instalar el APK?</div>
+                    <div class="faq-answer">Para nada. El proceso es sumamente sencillo: descargas el archivo, lo abres en tu móvil y sigues los pasos predeterminados de tu sistema.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">25. ¿Cómo se calculan los totales y subtotales en el carrito?</div>
+                    <div class="faq-answer">El sistema multiplica automáticamente el valor unitario de cada producto por la cantidad seleccionada y suma todos los elementos para darte el total exacto.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">26. ¿Puedo eliminar mi cuenta y mis datos personales de forma definitiva?</div>
+                    <div class="faq-answer">Sí, si deseas dar de baja tu cuenta y borrar toda tu información de nuestros registros, puedes solicitarlo enviando un correo a nuestro soporte técnico.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">27. ¿Qué tan seguido recibe actualizaciones la aplicación?</div>
+                    <div class="faq-answer">Actualizamos Shooper! de manera periódica para añadir nuevas funciones, mejorar la estabilidad y optimizar la experiencia general de compra.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">28. ¿Qué hago si el botón de descarga no inicia la descarga del APK?</div>
+                    <div class="faq-answer">Verifica tu conexión a internet o intenta abrir el enlace en otro navegador web de tu teléfono (como Google Chrome). Si persiste, contáctanos.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">29. ¿Shooper! recopila datos de ubicación geográfica?</div>
+                    <div class="faq-answer">No recopilamos información de ubicación a menos que sea estrictamente requerido para una función específica de tiendas locales, respetando siempre tu privacidad.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">30. ¿Dónde puedo consultar las políticas legales completas de la plataforma?</div>
+                    <div class="faq-answer">Puedes acceder en cualquier momento a la sección de "Términos y condiciones" disponible en el menú lateral de nuestra página web oficial.</div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Sección Términos y Condiciones -->
+        <section id="terms-section" class="page-section">
+            <h2 class="page-title">Términos y condiciones</h2>
+            <div class="terms-content">
+                <h3>1. Aceptación de los Términos</h3>
+                <p>Al descargar, instalar y utilizar la aplicación Shooper!, así como al navegar en este sitio web, aceptas cumplir y estar sujeto a los presentes Términos y Condiciones. Si no estás de acuerdo con alguna parte de estos términos, te solicitamos que no utilices nuestros servicios ni descargues la aplicación.</p>
+
+                <h3>2. Uso de la Aplicación y Licencia</h3>
+                <p>Shooper! te otorga una licencia limitada, no exclusiva, intransferible y revocable para descargar e instalar una copia de la aplicación en un dispositivo móvil de tu propiedad o control, exclusivamente para uso personal y no comercial.</p>
+
+                <h3>3. Privacidad y Protección de Datos</h3>
+                <p>El tratamiento de tu información personal se rige bajo estrictos estándares de confidencialidad. Los datos proporcionados para el registro y uso de la app son protegidos y no se ceden a terceros sin tu consentimiento previo, salvo requerimiento legal.</p>
+
+                <h3>4. Modificaciones del Servicio</h3>
+                <p>Nos reservamos el derecho de modificar, suspender o discontinuar, temporal o permanentemente, la aplicación o cualquier contenido ofrecido en ella, con o sin previo aviso y sin asumir responsabilidad alguna frente al usuario o terceros.</p>
+
+                <h3>5. Limitación de Responsabilidad</h3>
+                <p>Shooper! se proporciona "tal cual" y "según disponibilidad". No garantizamos que la aplicación esté libre de errores o interrupciones, ni asumimos responsabilidad por daños directos o indirectos derivados de su uso o de la imposibilidad de utilizarla.</p>
+
+                <h3>6. Contacto Legal</h3>
+                <p>Para cualquier duda, aclaración o notificación relacionada con estos Términos y Condiciones, puedes ponerte en contacto con nuestro equipo de atención a través del correo oficial: shoopercustomerservice@gmail.com.</p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Funcionalidad para abrir y cerrar el menú lateral
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('open');
+        }
+
+        function closeSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.remove('open');
+        }
+
+        // Control de navegación entre vistas (Inicio, FAQ, Términos)
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.page-section');
+            sections.forEach(sec => sec.classList.remove('active'));
+
+            if (sectionId === 'home') {
+                document.getElementById('home-section').classList.add('active');
+            } else if (sectionId === 'faq') {
+                document.getElementById('faq-section').classList.add('active');
+            } else if (sectionId === 'terms') {
+                document.getElementById('terms-section').classList.add('active');
+            }
+            window.scrollTo(0, 0);
+        }
+    </script>
+</body>
+</html>
